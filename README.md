@@ -31,7 +31,7 @@ Belyse Inema
  - CREATE DATABASE wildlife_tracker_test WITH TEMPLATE wildlife_tracker;
 
 ## Scrrenshot of The Page
-![WildLIfe Tracker](/images/wildlife.png)
+![WildLIfe Tracker](/public/images/wildlife.png)
 
 ## Known Bugs
 no bugs yet
