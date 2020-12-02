@@ -10,10 +10,14 @@ public class AnimalTest {
 
     @Test
     public void animal_instantiatesCorrectly_true() {
-        Animal testAnimalObj = new Animal("lion", "young","true","true");
+        Animal testAnimalObj = new Animal("monkey","newborn","false","true");
         assertEquals(true, testAnimalObj instanceof Animal);
     }
 
+    @Test
+    public void getName_fromAnimal_monkey() {
+        Animal testAnimalObj = new Animal("monkey","newborn","false","true");
+        assertEquals("monkey", testAnimalObj.getName());
 
-
+    }
 }
