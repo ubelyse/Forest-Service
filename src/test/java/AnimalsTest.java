@@ -37,4 +37,16 @@ public class AnimalsTest {
     @Test
     public void testEquals() {
     }
+
+    @Test
+    public void save() {
+    }
+
+    @Test
+    public void all() {
+    }
+
+    @Test
+    public void find() {
+    }
 }

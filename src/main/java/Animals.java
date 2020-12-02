@@ -1,3 +1,7 @@
+import org.sql2o.Connection;
+
+import java.util.List;
+
 public class Animals {
 
     private String name;
@@ -43,6 +47,36 @@ public class Animals {
                     this.getAge().equals(newAnimal.getAge())&&
                     this.getEndangered().equals(newAnimal.getEndangered())&&
                     this.getHealthy().equals(newAnimal.getHealthy());
+        }
+    }
+
+    public void save() {
+        try(Connection con = DB.sql2o.open()) {
+            String sql = "INSERT INTO animals (name, age,endangered,healthy) VALUES (:name, :age,:endangered,:healthy)";
+            this.id = (int) con.createQuery(sql, true)
+                    .addParameter("name", this.name)
+                    .addParameter("age", this.age)
+                    .addParameter("endangered", this.endangered)
+                    .addParameter("healthy", this.healthy)
+                    .executeUpdate()
+                    .getKey();
+        }
+    }
+
+    public static List<Animals> all() {
+        String sql = "SELECT * FROM animals";
+        try(Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql).executeAndFetch(Animals.class);
+        }
+    }
+
+    public static Animals find(int id) {
+        try(Connection con = DB.sql2o.open()) {
+            String sql = "SELECT * FROM persons where id=:id";
+            Animals Animal = con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Animals.class);
+            return Animal;
         }
     }
 }
