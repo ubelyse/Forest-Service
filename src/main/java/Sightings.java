@@ -1,5 +1,4 @@
 public class Sightings {
-
     private String location;
     private  String ranger;
     private  int id;
@@ -7,6 +6,7 @@ public class Sightings {
     public Sightings(String location, String ranger) {
         this.location = location;
         this.ranger = ranger;
+
     }
 
     public String getLocation() {

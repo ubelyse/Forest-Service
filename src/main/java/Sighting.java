@@ -20,16 +20,12 @@ public class Sighting {
         return ranger;
     }
 
-    public int getId() {
-        return id;
-    }
-
     @Override
-    public boolean equals(Object o){
-        if (!(o instanceof Sighting)) {
+    public boolean equals(Object otherSighting){
+        if (!(otherSighting instanceof Sighting)) {
             return false;
         } else {
-            Sighting newSighting = (Sighting) o;
+            Sighting newSighting = (Sighting) otherSighting;
             return this.getLocation().equals(newSighting.getLocation()) &&
                     this.getRanger().equals(newSighting.getRanger());
         }
@@ -53,6 +49,10 @@ public class Sighting {
         }
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static Sighting find(int id) {
         try(Connection con = DB.sql2o.open()) {
             String sql = "SELECT * FROM sightings where id=:id";
@@ -62,4 +62,5 @@ public class Sighting {
             return sighting;
         }
     }
+
 }

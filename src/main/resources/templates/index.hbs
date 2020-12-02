@@ -1,16 +1,13 @@
 {{#partial "content"}}
 
     <div class="jumbotron text-center">
-
         <h1>Wildlife Tracker</h1>
 
         <h3>About</h3>
-        <p> Wildlife Tracker is an application for keeping track of wildlife in the pack.</p>
-
-
+        <p> Forest Service Wild Life Tracker is an application for keeping track of wildlife in the park.</p>
 
     </div>
-    <div class="col-md-6 text-center">
+    <div class="col-md-6 pform text-center">
         <h2>Post Sighting </h2>
         <form action="/post_sighting" method="post" class="p-2" id="regHero">
             <label for="animalName">Animal Sighted</label>
@@ -27,16 +24,16 @@
             <label for="health">Animal's Health</label>
             <select class="form-control" id="inlineFormCustomSelect" name="healthy" required>
                 <option >Choose... Animal's Health</option>
-                <option  value="true">Okay</option>
-                <option value="false">Ill</option>
+                <option  value="false">Ill</option>
+                <option value="true">Not Ill</option>
 
             </select>
 
-            <label for="endangered">Is animal Endangered ?</label>
+            <label for="endangered">Is this Animal Endangered ?</label>
             <select class="form-control" id="inlineFormCustomSelect" name="endangered" required>
-                <option disabled>Choose... Animal's Endangered Category</option>
-                <option  value="true">Not under Endangered Category</option>
-                <option value="false">Animal under Endangered Category</option>
+                <option enabled>Choose... Endangered Category</option>
+                <option  value="false">Not Endangered</option>
+                <option value="true"> Endangered </option>
 
             </select>
 
@@ -54,23 +51,20 @@
 
             <label for="ranger">Ranger Name</label>
             <select class="form-control" id="inlineFormCustomSelect" name="ranger" required>
-                <option >Choose... Your Name</option>
-                <option  value="kamala">Kamala</option>
+                <option >Choose... Ranger Name</option>
+                <option  value="national park">National Park</option>
                 <option  value="bacteria">Bacteria</option>
-                <option  value="Wamlambez">Wamlambez</option>
                 <option  value="shadi">Shadi</option>
-
             </select>
-
-
-
-            <button type="submit" class="btn btn-primary">Register</button>
+            <br>
+            <button type="submit" class="btn btn-success">Register</button>
 
         </form>
     </div>
-    <div class="col-md-6 text-center">
+<br>
+    <div class="col-md-6 lsight text-center">
 
-        <h3 class="">List of Sightings</h3>
+        <h3 class=""><u>List of Sightings</u></h3>
         {{#if allSighting}}
             <h4>{{location}}</h4>
             <h4>{{ranger}}</h4>
@@ -81,10 +75,11 @@
 
         <ol>
             {{#each allAnimals}}
-                <h3>{{id}}. Animal : {{name}}  </h3>
-                <h4>Age {{age}}: </h4>
-                <h4>Endangered ? : {{endangered}}</h4>
-                <h4>Healthy ? :  {{healthy}}</h4>
+                <h3>{{id}}. Animal: {{name}}  </h3>
+                <h4>Age: {{age}} </h4>
+                <h4>Endangered?(true or false): {{endangered}}</h4>
+                <h4>Healthy?(true or false):  {{healthy}}</h4>
+            <p>------------------------------------------------------------</p>
             </ol>
             <ul>
 

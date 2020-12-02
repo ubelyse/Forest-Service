@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Animal {
-
     private String name;
     private String age;
     private String endangered;
@@ -83,4 +82,5 @@ public class Animal {
             return animal;
         }
     }
+
 }
