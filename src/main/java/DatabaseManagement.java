@@ -1,4 +1,5 @@
 public interface DatabaseManagement {
+
     public void save();
     public void update();
     public void delete();
