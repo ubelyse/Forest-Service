@@ -51,8 +51,10 @@ public class App {
             Sighting newSighting = new Sighting(location,ranger);
             newAnimal.save();
             newSighting.save();
-//            System.out.println(newAnimal);
+//           System.out.println(newAnimal);
             return new ModelAndView(model, "success.hbs");
         }, new HandlebarsTemplateEngine());
     }
+
+
 }
