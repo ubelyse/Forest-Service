@@ -18,6 +18,17 @@ public class AnimalTest {
     public void getName_fromAnimal_monkey() {
         Animal testAnimalObj = new Animal("monkey","newborn","false","true");
         assertEquals("monkey", testAnimalObj.getName());
+    }
 
+    @Test
+    public void getAge_fromAnimal_newborn() {
+        Animal testAnimalObj = new Animal("monkey","newborn","false","true");
+        assertEquals("newborn", testAnimalObj.getAge());
+    }
+
+    @Test
+    public void getEndangered_fromAnimal_true() {
+        Animal testAnimalObj = new Animal("monkey","newborn","false","true");
+        assertEquals("true", testAnimalObj.getEndangered());
     }
 }
