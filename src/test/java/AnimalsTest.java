@@ -15,8 +15,27 @@ public class AnimalsTest {
     }
 
     @Test
-    public void getName_successfulGet_String() {
+    public void getName_fromAnimal_String() {
         Animals testAnimalObj = testAll();
         assertEquals("monkey", testAnimalObj.getName());
     }
+
+    @Test
+    public void getAge_fromAnimal_String() {
+        Animals testAnimalObj =testAll();
+        assertEquals("newborn",testAnimalObj.getAge());
+    }
+
+    @Test
+    public void getEndangered() {
+    }
+
+    @Test
+    public void getHealthy() {
+    }
+
+    @Test
+    public void testEquals() {
+    }
+
 }
