@@ -1,117 +1,116 @@
-import org.sql2o.*;
+import org.sql2o.Connection;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class EndangeredAnimal extends Animal implements DatabaseManagement {
+public class EndangeredAnimal extends Animal{
 
-    private double age;
     private String health;
-    public static final String DATABASE_TYPE = "endangered_animal";
+    private String age;
+    public static final String DATABASE_TYPE = "endangered";
 
-    public EndangeredAnimal(String name, double age, String health) {
-        if(DatabaseManagement.nameValidation(name)) {
-            this.name = name;
-        }
-        if(DatabaseManagement.ageValidation(age)) {
-            this.age = age;
-        }
-        this.health = health;
-        this.type = DATABASE_TYPE;
+    public EndangeredAnimal(String name,String health,String age){
+        super(name);
+        this.name=name;
+        this.health=health;
+        this.age=age;
+        type=DATABASE_TYPE;
     }
 
-    public double getAge() {
-        return this.age;
-    }
-
-    public void setAge(double age) {
-        if(DatabaseManagement.ageValidation(age)) {
-            this.age = age;
-        }
+    public String getName() {
+        return name;
     }
 
     public String getHealth() {
-        return this.health;
+        return health;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public static String getDatabaseType() {
+        return DATABASE_TYPE;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setHealth(String health) {
         this.health = health;
     }
 
-    @Override
-    public void save() {
-        if (Animal.nameExists(this.name, this.id)) {
-            throw new IllegalArgumentException("Error: Name already exists.");
-        } else {
-            try(Connection con = DB.sql2o.open()) {
-                String sql = "INSERT INTO animals (name, type, age, health) VALUES (:name, :type, :age, :health);";
-                this.id = (int) con.createQuery(sql, true)
-                        .addParameter("name", this.name)
-                        .addParameter("age", this.age)
-                        .addParameter("health", this.health)
-                        .addParameter("type", DATABASE_TYPE)
-                        .executeUpdate()
-                        .getKey();
-            }
-        }
-    }
-
-    public void update() {
-        if (Animal.nameExists(this.name, this.id)) {
-            throw new IllegalArgumentException("Error: Name already exists.");
-        } else {
-            try(Connection con = DB.sql2o.open()) {
-                String sql = "UPDATE animals SET name = :name, age = :age, health = :health WHERE id = :id;";
-                con.createQuery(sql)
-                        .addParameter("id", this.id)
-                        .addParameter("name", this.name)
-                        .addParameter("age", this.age)
-                        .addParameter("health", this.health)
-                        .executeUpdate();
-            }
-        }
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public static List<EndangeredAnimal> all() {
+        String sql = "SELECT * FROM animals ;";
         try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM animals WHERE type = :type;";
             return con.createQuery(sql)
                     .throwOnMappingFailure(false)
-                    .addParameter("type", DATABASE_TYPE)
                     .executeAndFetch(EndangeredAnimal.class);
         }
     }
-
     public static EndangeredAnimal find(int id) {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM animals WHERE id = :id AND type = :type;";
-            return con.createQuery(sql)
-                    .throwOnMappingFailure(false)
+            String sql = "SELECT * FROM animals where id=:id";
+            EndangeredAnimal animal = con.createQuery(sql)
                     .addParameter("id", id)
-                    .addParameter("type", DATABASE_TYPE)
-                    .executeAndFetchFirst(EndangeredAnimal.class);
-        }
-    }
-
-    public static List<EndangeredAnimal> search(String search) {
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM animals WHERE name ~* :search AND type = :type;";
-            return con.createQuery(sql)
                     .throwOnMappingFailure(false)
-                    .addParameter("search", ".*" + search + ".*")
-                    .addParameter("type", DATABASE_TYPE)
-                    .executeAndFetch(EndangeredAnimal.class);
+                    .executeAndFetchFirst(EndangeredAnimal.class);
+            return animal;
         }
     }
+    public void save() {
+        try(Connection con = DB.sql2o.open()) {
+            String sql = "INSERT INTO animals (name, health, age) VALUES (:name, :health, :age)";
+            this.id = (int) con.createQuery(sql, true)
+                    .addParameter("name", this.name)
+                    .addParameter("health", this.health)
+                    .addParameter("age", this.age)
+                    //.addParameter("type", this.type)
+                    .executeUpdate()
+                    .getKey();
+        }
+    }
+    public List<Object> getAnimals() {
+        List<Object> allAnimals = new ArrayList<Object>();
 
+        try(Connection con = DB.sql2o.open()) {
+            String sqlSighting = "SELECT * FROM animals WHERE animalid=:id";
+            List<Sighting> animals = con.createQuery(sqlSighting)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Sighting.class);
+            allAnimals.addAll(animals);
+
+            String sqlEndangeredAnimal = "SELECT * FROM animals WHERE animalid=:id AND type='endangered';";
+            List<Sighting> endangeredAnimals = con.createQuery(sqlEndangeredAnimal)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Sighting.class);
+            allAnimals.addAll(endangeredAnimals);
+        }
+
+        return allAnimals;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        EndangeredAnimal that = (EndangeredAnimal) o;
+        return Objects.equals(health, that.health) &&
+                Objects.equals(age, that.age);
+    }
 
     @Override
-    public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof EndangeredAnimal)) {
-            return false;
-        } else {
-            EndangeredAnimal otherAnimal = (EndangeredAnimal) otherObject;
-            return this.getName().equals(otherAnimal.getName()) &&
-                    this.getId() == otherAnimal.getId();
-        }
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), health, age);
     }
+
 
 }

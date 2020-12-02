@@ -1,109 +1,25 @@
 {{#partial "content"}}
 
-    <div class="jumbotron text-center">
-        <h1>Wildlife Tracker</h1>
-
-        <h3>About</h3>
-        <p> Forest Service Wild Life Tracker is an application for keeping track of wildlife in the park.</p>
-
-    </div>
-    <div class="col-md-6 pform text-center">
-        <h2>Post Sighting </h2>
-        <form action="/post_sighting" method="post" class="p-2" id="regHero">
-            <label for="animalName">Animal Sighted</label>
-            <input type="text" class="form-control" name="name" placeholder=" Name of Animal sighted" required>
-
-            <label for="age">Animal's Age</label>
-            <select class="form-control" id="inlineFormCustomSelect" name="age" required>
-                <option >Choose... Animal's Age</option>
-                <option  value="new-born">New Born</option>
-                <option value="young">Young</option>
-                <option value="adult">Adult</option>
-            </select>
-
-            <label for="health">Animal's Health</label>
-            <select class="form-control" id="inlineFormCustomSelect" name="healthy" required>
-                <option >Choose... Animal's Health</option>
-                <option  value="false">Ill</option>
-                <option value="true">Not Ill</option>
-
-            </select>
-
-            <label for="endangered">Is this Animal Endangered ?</label>
-            <select class="form-control" id="inlineFormCustomSelect" name="endangered" required>
-                <option enabled>Choose... Endangered Category</option>
-                <option  value="false">Not Endangered</option>
-                <option value="true"> Endangered </option>
-
-            </select>
-
-            <label for="location">Sighting location</label>
-            <select class="form-control" id="inlineFormCustomSelect" name="location" required>
-                <option >Choose... Sighting location</option>
-                <option value="zone_A">Zone A</option>
-                <option value="zone_B">Zone B</option>
-                <option value="zone_C">Zone C</option>
-                <option value="zone_D">Zone D</option>
-                <option value="zone_E">Zone E</option>
-
-
-            </select>
-
-            <label for="ranger">Ranger Name</label>
-            <select class="form-control" id="inlineFormCustomSelect" name="ranger" required>
-                <option >Choose... Ranger Name</option>
-                <option  value="national park">National Park</option>
-                <option  value="bacteria">Bacteria</option>
-                <option  value="shadi">Shadi</option>
-            </select>
-            <br>
-            <button type="submit" class="btn btn-success">Register</button>
-
-        </form>
-    </div>
-<br>
-    <div class="col-md-6 lsight text-center">
-
-        <h3 class=""><u>List of Sightings</u></h3>
-        {{#if allSighting}}
-            <h4>{{location}}</h4>
-            <h4>{{ranger}}</h4>
-
-        {{/if}}
-
-        {{#if allAnimals}}
-
-        <ol>
-            {{#each allAnimals}}
-                <h3>{{id}}. Animal: {{name}}  </h3>
-                <h4>Age: {{age}} </h4>
-                <h4>Endangered?(true or false): {{endangered}}</h4>
-                <h4>Healthy?(true or false):  {{healthy}}</h4>
-            <p>------------------------------------------------------------</p>
-            </ol>
-            <ul>
-
-            {{/each}}
-        </ul>
-
-
-        {{else}}
-            <div class="jumbotron m-4" >
-                <h4>OOOPS!!!No Animal Sighting recorded yet </h4>
-                <!--                <a href="#regHero">Register Hero</a>-->
+    <div class="container-fluid" id="welcome">
+        <h1>NATURE IS WHAT NUTURES US AND AS SO, IT IS OUR RESPONSIBILITY TO PROTECT THEM.</h1>
+        <br>
+        <h2>Welcome to Wild Life Tracker. </h2>
+        <br><br>
+        <h3><u>What Do You Have For Us Today? </u></h3>
+        <div class="row" id="bSite">
+            <div class="col-md-6">
+                <a href="/posts/animals/new" style="color:White"; class="btn btn-outline-success btn-lg">Report A Sighting</a>
             </div>
-        {{/if}}
+            <div class="col-md-6">
+                <a href="/posts/endangered-animals/new" style="color:White"; class="btn btn-outline-success btn-lg">Report An Endangered Sighting</a>
+            </div>
 
-
-
-
+        </div>
 
     </div>
+
 
 
 
 {{/partial}}
-
-
-
-{{> layout.hbs}}
+{{>layout.hbs}}

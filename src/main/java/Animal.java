@@ -1,92 +1,75 @@
+import org.sql2o.Connection;
+
+import java.util.ArrayList;
 import java.util.List;
-import org.sql2o.*;
+import java.util.Objects;
 
-public abstract class Animal implements DatabaseManagement {
-    protected int id;
-    protected String name;
-    protected String type;
-    private static final int MIN_NAME_LENGTH = 1;
+public  class Animal {
+    public int id;
+    public String name;
+    public String type;
 
-    public int getId() {
-        return this.id;
+    public Animal(String name){
+        this.name=name;
     }
 
     public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        if(DatabaseManagement.nameValidation(name)) {
-            this.name = name;
-        }
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public List<Sighting> getSightings() {
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM sightings WHERE animal_id = :animal_id;";
-            return con.createQuery(sql)
-                    .addParameter("animal_id", this.id)
-                    .addColumnMapping("time_of_sighting", "timeOfSighting")
-                    .addColumnMapping("animal_id", "animalId")
-                    .addColumnMapping("location_id", "locationId")
-                    .addColumnMapping("ranger_id", "rangerId")
-                    .executeAndFetch(Sighting.class);
-        }
-    }
-
-    public static boolean nameExists(String name, int id) {
-        Integer count = 0;
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT count(name) FROM animals WHERE name = :name AND id != :id;";
-            count = con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .addParameter("name", name)
-                    .addParameter("id", id)
-                    .executeScalar(Integer.class);
-        }
-        return count != 0;
-    }
-
-    public static boolean idExists(int id) {
-        Integer count = 0;
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT count(id) FROM animals WHERE id = :id;";
-            count = con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .addParameter("id", id)
-                    .executeScalar(Integer.class);
-        }
-        return count != 0;
-    }
-
-    public static String getAnimalType(int id) {
-        String type;
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT type FROM animals WHERE id = :id;";
-            type = con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .addParameter("id", id)
-                    .executeScalar(String.class);
-        }
-        return type;
-    }
-
-    public static String getAnimalName(int id) {
-        String name;
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT name FROM animals WHERE id = :id;";
-            name = con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .addParameter("id", id)
-                    .executeScalar(String.class);
-        }
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+    public static List<EndangeredAnimal> all() {
+        String sql = "SELECT * FROM animals ";
+        try(Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(EndangeredAnimal.class);
+        }
+    }
+
+    public void save() {
+        try(Connection con = DB.sql2o.open()) {
+            String sql = "INSERT INTO animals (name, type) VALUES (:name, :type)";
+            this.id = (int) con.createQuery(sql, true)
+                    .addParameter("name", this.name)
+                    .addParameter("type", this.type)
+                    .executeUpdate()
+                    .getKey();
+        }
+    }
+    public List<Object> getAnimals() {
+        List<Object> allAnimals = new ArrayList<Object>();
+
+        try(Connection con = DB.sql2o.open()) {
+            String sqlSighting = "SELECT * FROM animals WHERE animalid=:id";
+            List<Sighting> animals = con.createQuery(sqlSighting)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Sighting.class);
+            allAnimals.addAll(animals);
+
+            String sqlEndangeredAnimal = "SELECT * FROM animals WHERE animalid=:id AND type='endangered';";
+            List<Sighting> endangeredAnimals = con.createQuery(sqlEndangeredAnimal)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Sighting.class);
+            allAnimals.addAll(endangeredAnimals);
+        }
+
+        return allAnimals;
+    }
+    public static void update(int id, String name) {
+        try (Connection con = DB.sql2o.open()) {
+            String sql = "UPDATE animals SET name = :name WHERE id = :id";
+            con.createQuery(sql)
+                    .addParameter("name", name)
+                    .addParameter("id", id)
+                    .throwOnMappingFailure(false)
+                    .executeUpdate();
+        }
+    }
     public void delete() {
         try(Connection con = DB.sql2o.open()) {
             String sql = "DELETE FROM animals WHERE id = :id;";
@@ -95,5 +78,16 @@ public abstract class Animal implements DatabaseManagement {
                     .executeUpdate();
         }
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Animal animal = (Animal) o;
+        return Objects.equals(name, animal.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }

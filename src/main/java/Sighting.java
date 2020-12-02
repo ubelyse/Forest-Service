@@ -1,101 +1,82 @@
+import org.sql2o.Connection;
+
+import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
-import org.sql2o.*;
+import java.util.Objects;
 
 public class Sighting {
+    private String location;
+    private String rangername;
     private int id;
-    private int animalId;
-    private int locationId;
-    private int rangerId;
-    private Timestamp timeOfSighting;
+    public int animalid;
+    public Date date= new Date();
+    public Timestamp time;
 
-    public Sighting (int animalId, int locationId, int rangerId, Timestamp timeOfSighting) {
-        if(!Animal.idExists(animalId)) {
-            throw new IllegalArgumentException("Error: invalid animalId");
-        }
-        this.animalId = animalId;
-        if(!Location.idExists(locationId)) {
-            throw new IllegalArgumentException("Error: invalid locationId");
-        }
-        this.locationId = locationId;
-        if(!Ranger.idExists(rangerId)) {
-            throw new IllegalArgumentException("Error: invalid locationId");
-        }
-        this.rangerId = rangerId;
-        this.timeOfSighting = timeOfSighting;
+    public Sighting(String location,String rangername,int animalid){
+        this.location=location;
+        this.rangername=rangername;
+        this.animalid=animalid;
+        this.time = new Timestamp(date.getTime());
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getRangername() {
+        return rangername;
+    }
+
+    public void setRangername(String rangername) {
+        this.rangername = rangername;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAnimalid() {
+        return animalid;
+    }
+
+    public void setAnimalid(int animalid) {
+        this.animalid = animalid;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
-    public int getAnimalId() {
-        return this.animalId;
+    public Timestamp getTime() {
+        return time;
     }
 
-    public void setAnimalId(int animalId) {
-        if(!Animal.idExists(animalId)) {
-            throw new IllegalArgumentException("Error: invalid animalId");
+
+    public static List<Sighting> all() {
+        String sql = "SELECT * FROM sightings";
+        try(Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(Sighting.class);
         }
-        this.animalId = animalId;
     }
-
-    public int getLocationId() {
-        return this.locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        if(!Location.idExists(locationId)) {
-            throw new IllegalArgumentException("Error: invalid locationId");
-        }
-        this.locationId = locationId;
-    }
-
-    public int getRangerId() {
-        return this.rangerId;
-    }
-
-    public void setRangerId(int rangerId) {
-        if(!Ranger.idExists(rangerId)) {
-            throw new IllegalArgumentException("Error: invalid rangerId");
-        }
-        this.rangerId = rangerId;
-    }
-
-    public Timestamp getTimeOfSighting() {
-        return this.timeOfSighting;
-    }
-
-    public void setTimeOfSighting(Timestamp timeOfSighting) {
-        this.timeOfSighting = timeOfSighting;
-    }
-
     public void save() {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "INSERT INTO sightings (time_of_sighting, animal_id, location_id, ranger_id) VALUES (:time_of_sighting, :animal_id, :location_id, :ranger_id);";
+            String sql = "INSERT INTO sightings (location, rangername, animalid) VALUES (:location, :rangername, :animalid)";
             this.id = (int) con.createQuery(sql, true)
-                    .addParameter("time_of_sighting", this.timeOfSighting)
-                    .addParameter("animal_id", this.animalId)
-                    .addParameter("location_id", this.locationId)
-                    .addParameter("ranger_id", this.rangerId)
+                    .addParameter("location", this.location)
+                    .addParameter("rangername", this.rangername)
+                    .addParameter("animalid", this.animalid)
                     .executeUpdate()
                     .getKey();
         }
     }
-
-    public void update() {
-        try(Connection con = DB.sql2o.open()) {
-            String sql = "UPDATE sightings SET time_of_sighting = :time_of_sighting, animal_id = :animal_id, location_id = :location_id, ranger_id = :ranger_id WHERE id = :id;";
-            con.createQuery(sql)
-                    .addParameter("id", this.id)
-                    .addParameter("time_of_sighting", this.timeOfSighting)
-                    .addParameter("animal_id", this.animalId)
-                    .addParameter("location_id", this.locationId)
-                    .addParameter("ranger_id", this.rangerId)
-                    .executeUpdate();
-        }
-    }
-
     public void delete() {
         try(Connection con = DB.sql2o.open()) {
             String sql = "DELETE FROM sightings WHERE id = :id;";
@@ -107,41 +88,47 @@ public class Sighting {
 
     public static Sighting find(int id) {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM sightings WHERE id = :id;";
-            return con.createQuery(sql)
-                    .throwOnMappingFailure(false)
+            String sql = "SELECT * FROM sightings where id=:id";
+            Sighting sighting = con.createQuery(sql)
                     .addParameter("id", id)
-                    .addColumnMapping("time_of_sighting", "timeOfSighting")
-                    .addColumnMapping("animal_id", "animalId")
-                    .addColumnMapping("location_id", "locationId")
-                    .addColumnMapping("ranger_id", "rangerId")
                     .executeAndFetchFirst(Sighting.class);
+            return sighting;
         }
     }
+    public List<Object> getSightings() {
+        List<Object> allSightings = new ArrayList<Object>();
 
-    public static List<Sighting> all() {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM sightings;";
-            return con.createQuery(sql)
-                    .addColumnMapping("time_of_sighting", "timeOfSighting")
-                    .addColumnMapping("animal_id", "animalId")
-                    .addColumnMapping("location_id", "locationId")
-                    .addColumnMapping("ranger_id", "rangerId")
+            String sqlSighting = "SELECT * FROM sightings WHERE animalid=:id";
+            List<Sighting> sightings = con.createQuery(sqlSighting)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
                     .executeAndFetch(Sighting.class);
+            allSightings.addAll(sightings);
+
+            String sqlEndangeredAnimal = "SELECT * FROM sightings WHERE animalid=:id AND type='endangered';";
+            List<Sighting> endangeredSightings = con.createQuery(sqlSighting)
+                    .addParameter("id", this.id)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Sighting.class);
+            allSightings.addAll(endangeredSightings);
         }
+
+        return allSightings;
     }
 
     @Override
-    public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof Sighting)) {
-            return false;
-        } else {
-            Sighting otherSighting = (Sighting) otherObject;
-            return this.getId() == otherSighting.getId() &&
-                    this.getAnimalId() == otherSighting.getAnimalId() &&
-                    this.getLocationId() == otherSighting.getLocationId() &&
-                    this.getRangerId() == otherSighting.getRangerId();
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sighting sighting = (Sighting) o;
+        return animalid == sighting.animalid &&
+                Objects.equals(location, sighting.location) &&
+                Objects.equals(rangername, sighting.rangername);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(location, rangername, animalid);
+    }
 }
