@@ -31,4 +31,18 @@ public class AnimalTest {
         Animal testAnimalObj = new Animal("monkey","newborn","false","true");
         assertEquals("true", testAnimalObj.getEndangered());
     }
+
+    @Test
+    public void getHealthy_fromAnimal_true() {
+        Animal testAnimalObj = new Animal("monkey","newborn","false","true");
+        assertEquals("true", testAnimalObj.getHealthy());
+
+    }
+
+    @Test
+    public void equals_fromAnimal_true() {
+        Animal firstAnimal = new Animal("monkey","newborn","false","true");
+        Animal anotherAnimal = new Animal("lion", "young","true","true");
+        assertTrue(firstAnimal.equals(anotherAnimal));
+    }
 }
