@@ -6,11 +6,17 @@ public class AnimalsTest {
 
     @Test
     public void animal_instantiatesCorrectly_true() {
-        Animals testAnimalObj = first_test();
+        Animals testAnimalObj = testAll();
         assertEquals(true, testAnimalObj instanceof Animals);
     }
 
-    private Animals first_test() {
-       return new Animals("lion","young","true","true");
+    private Animals testAll() {
+       return new Animals("monkey","newborn","false","true");
+    }
+
+    @Test
+    public void getName_successfulGet_String() {
+        Animals testAnimalObj = testAll();
+        assertEquals("monkey", testAnimalObj.getName());
     }
 }

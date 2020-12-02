@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="AnimalsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-12-02T05:56:15" hostname="wecode-VivoBook-15-ASUS-Laptop-X540UAR" time="0.0">
+<testsuite name="AnimalsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-02T05:58:34" hostname="wecode-VivoBook-15-ASUS-Laptop-X540UAR" time="0.001">
   <properties/>
-  <testcase name="animal_instantiatesCorrectly_true" classname="AnimalsTest" time="0.0"/>
+  <testcase name="animal_instantiatesCorrectly_true" classname="AnimalsTest" time="0.001"/>
+  <testcase name="getName_successfulGet_String" classname="AnimalsTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
