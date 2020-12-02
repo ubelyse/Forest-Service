@@ -37,5 +37,4 @@ public class AnimalsTest {
     @Test
     public void testEquals() {
     }
-
 }

@@ -32,4 +32,17 @@ public class Animals {
     public int getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (!(o instanceof Animals)) {
+            return false;
+        } else {
+            Animals newAnimal = (Animals) o;
+            return this.getName().equals(newAnimal.getName()) &&
+                    this.getAge().equals(newAnimal.getAge())&&
+                    this.getEndangered().equals(newAnimal.getEndangered())&&
+                    this.getHealthy().equals(newAnimal.getHealthy());
+        }
+    }
 }
