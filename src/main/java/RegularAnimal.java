@@ -2,6 +2,7 @@ import java.util.List;
 import org.sql2o.*;
 
 public class RegularAnimal extends Animal implements DatabaseManagement {
+
     public static final String DATABASE_TYPE = "animal";
 
     public RegularAnimal(String name) {

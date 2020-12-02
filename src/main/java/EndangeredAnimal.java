@@ -2,6 +2,7 @@ import org.sql2o.*;
 import java.util.List;
 
 public class EndangeredAnimal extends Animal implements DatabaseManagement {
+
     private double age;
     private String health;
     public static final String DATABASE_TYPE = "endangered_animal";

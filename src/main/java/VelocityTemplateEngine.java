@@ -1,3 +1,4 @@
+package spark.template.velocity;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
