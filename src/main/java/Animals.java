@@ -72,7 +72,7 @@ public class Animals {
 
     public static Animals find(int id) {
         try(Connection con = DB.sql2o.open()) {
-            String sql = "SELECT * FROM persons where id=:id";
+            String sql = "SELECT * FROM animals where id=:id";
             Animals Animal = con.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetchFirst(Animals.class);
