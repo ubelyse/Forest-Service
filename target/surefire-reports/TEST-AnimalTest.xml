@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="0" name="AnimalTest" time="0.689" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="AnimalTest" time="0.512" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.9+11"/>
@@ -62,14 +62,14 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="AnimalTest" name="getEndangered_fromAnimal_true" time="0.022"/>
-  <testcase classname="AnimalTest" name="getName_fromAnimal_monkey" time="0.017"/>
-  <testcase classname="AnimalTest" name="getAge_fromAnimal_newborn" time="0.018"/>
-  <testcase classname="AnimalTest" name="equals_fromAnimal_true" time="0.019"/>
-  <testcase classname="AnimalTest" name="save_ObjectIntoDatabase_Animals" time="0.14"/>
+  <testcase classname="AnimalTest" name="getEndangered_fromAnimal_true" time="0.011"/>
+  <testcase classname="AnimalTest" name="getName_fromAnimal_monkey" time="0.007"/>
+  <testcase classname="AnimalTest" name="getAge_fromAnimal_newborn" time="0.009"/>
+  <testcase classname="AnimalTest" name="equals_fromAnimal_true" time="0.008"/>
+  <testcase classname="AnimalTest" name="save_ObjectIntoDatabase_Animals" time="0.095"/>
   <testcase classname="AnimalTest" name="getHealthy_fromAnimal_true" time="0.016"/>
-  <testcase classname="AnimalTest" name="save_assignsIdToAnimal" time="0.143"/>
-  <testcase classname="AnimalTest" name="animal_instantiatesCorrectly_true" time="0.026"/>
-  <testcase classname="AnimalTest" name="find_returnsAnimalWithSameId_secondAnimal" time="0.125"/>
-  <testcase classname="AnimalTest" name="all_returnsAllInstancesOfAnimal_true" time="0.163"/>
+  <testcase classname="AnimalTest" name="save_assignsIdToAnimal" time="0.098"/>
+  <testcase classname="AnimalTest" name="animal_instantiatesCorrectly_true" time="0.016"/>
+  <testcase classname="AnimalTest" name="find_returnsAnimalWithSameId_secondAnimal" time="0.145"/>
+  <testcase classname="AnimalTest" name="all_returnsAllInstancesOfAnimal_true" time="0.107"/>
 </testsuite>
